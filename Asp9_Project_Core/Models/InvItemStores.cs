@@ -14,7 +14,6 @@ namespace Asp9_Project_Core.Models
         
         [ForeignKey(nameof(Items))]
         public int Item_Id { get; set; }
-
         public double Balance { get; set; }
         public double ReservedQuantity{ get; set; }
         public int Factor{ get; set; }

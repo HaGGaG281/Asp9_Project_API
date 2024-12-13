@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Asp9_Project_Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241127211842_first mig")]
-    partial class firstmig
+    [Migration("20241207190227_fm")]
+    partial class fm
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

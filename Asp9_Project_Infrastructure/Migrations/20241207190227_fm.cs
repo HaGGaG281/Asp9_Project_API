@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Asp9_Project_Infrastructure.Migrations
 {
-    public partial class firstmig : Migration
+    public partial class fm : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

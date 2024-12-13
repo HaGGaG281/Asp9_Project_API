@@ -13,7 +13,7 @@ namespace Asp9_Project_Core.Models
         public int Item_Id { get; set; }
        
         [ForeignKey(nameof(Users))]
-        public int Cus_Id { get; set; }
+        public int? Cus_Id { get; set; }
 
         [ForeignKey(nameof(Stores))]
         public int Store_Id { get; set; }
