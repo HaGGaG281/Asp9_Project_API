@@ -138,9 +138,45 @@ namespace Asp9_Project_Infrastructure.Repositories
 
         }
 
-        public Task<InvoiceRecieptDTO> GetInvoiceReciept(int customer_id, int invoice_id)
+        public async Task<InvoiceRecieptDTO> GetInvoiceReciept(int customer_id, int invoice_id)
         {
-            throw new NotImplementedException();
+            var invoice = await appDbContext.Invoice
+                .Include(i => i.InvoiceDetails)
+                .ThenInclude(x => x.Items)
+                .FirstOrDefaultAsync(i => i.Cus_Id == customer_id && i.Id == invoice_id);
+
+            if(invoice == null)
+            {
+                return null;
+            }
+
+            double total_price =0 ;
+            foreach (var item in invoice.InvoiceDetails)
+            {
+                double item_price = item.Quantity * item.price;
+                total_price+= item_price;
+            }
+
+            invoice.NetPrice = total_price;
+            await appDbContext.SaveChangesAsync();
+
+            var reciept = new InvoiceRecieptDTO
+            {
+                invoice_id = invoice_id,
+                customer_id = invoice.Cus_Id,
+                created_at = invoice.CreatedAt,
+                total_price = total_price,
+                items = invoice.InvoiceDetails.Select(d => new InvoiceItemsDTO
+                {
+                    item_name = d.Items.Name,
+                    quantity = d.Quantity,
+                    unit_name =appDbContext.Units.FirstOrDefault(u => u.Id == d.Unit_Id)?.Name ?? "unknown",
+                    price_per_unit = d.price,
+                    total_price = (d.Quantity * d.price)
+                }).ToList()
+            };
+            return reciept;
+
         }
     }
 }

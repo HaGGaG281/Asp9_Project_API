@@ -10,6 +10,7 @@ namespace Asp9_Project_Core.Interfaces
 {
     public interface IItemsRepository
     {
-        Task<IEnumerable<ItemsDTO>> GetItemsAsync();
+        Task<PagedResponse<ItemsDTO>> GetItemsAsync(int page_index, int page_size);
+        Task<PagedResponse<ItemsDTO>> PaginationAsync(IQueryable<ItemsDTO> query, int page_index, int pagesize);
     }
 }

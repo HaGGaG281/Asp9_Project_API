@@ -38,13 +38,36 @@ namespace Asp9_Project_Infrastructure.Repositories
         //}
 
 
-        public async Task<IEnumerable<ItemsDTO>> GetItemsAsync()
+        public async Task<PagedResponse<ItemsDTO>> GetItemsAsync(int page_index , int page_size)
         {
             var config = Mapping_Profile.Config;
-            var items = await appDbContext.Items
+            var items =  appDbContext.Items
                                     .ProjectToType<ItemsDTO>(config)
-                                    .ToListAsync();
-            return items;
+                                    .AsQueryable();
+            var result =await PaginationAsync(items, page_index, page_size);
+            return result;
+        }
+
+      
+
+        public async Task<PagedResponse<ItemsDTO>> PaginationAsync(IQueryable<ItemsDTO> query, int page_index, int page_size)
+        {
+            var total_items = await query.CountAsync();
+
+            var items = await query
+                .Skip((page_index - 1) * page_size)   // page-index = 3-1= 2  ----- page_size = 5*2 =  10
+                .Take(page_size)
+                .ToListAsync();
+
+            var result =  new PagedResponse<ItemsDTO>
+            {
+                total_items = total_items,
+                items = items,
+                page_index = page_index,
+                page_size = page_size
+            };
+            return result;
+
         }
     }
 }

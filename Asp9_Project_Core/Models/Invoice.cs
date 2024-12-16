@@ -22,6 +22,7 @@ namespace Asp9_Project_Core.Models
         public bool isReviewed { get; set; }
         public bool isClosed { get; set; }
 
+        public ICollection<InvoiceDetails> InvoiceDetails { get; set; } = new HashSet<InvoiceDetails>();
         public Users Users { get; set; }
     }
 }

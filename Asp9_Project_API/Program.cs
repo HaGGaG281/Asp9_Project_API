@@ -31,10 +31,11 @@ namespace Asp9_Project_API
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredUniqueChars = 1;
             }).AddEntityFrameworkStores<AppDbContext>();
-            builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-            builder.Services.AddScoped<IItemsRepository, ItemsRepository>();
-            builder.Services.AddScoped<ICartRepository, CartRepository>();
-            builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            //builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+            //builder.Services.AddScoped<IItemsRepository, ItemsRepository>();
+            //builder.Services.AddScoped<ICartRepository, CartRepository>();
+            //builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWOrk>();
             var config = TypeAdapterConfig.GlobalSettings;
             builder.Services.AddSingleton(config);
 

@@ -2,6 +2,7 @@
 using Asp9_Project_Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Printing;
 
 namespace Asp9_Project_API.Controllers
 {
@@ -9,17 +10,20 @@ namespace Asp9_Project_API.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly IItemsRepository itemsRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ItemsController(IItemsRepository itemsRepository)
+        //private readonly IItemsRepository itemsRepository;
+
+        public ItemsController(/*IItemsRepository itemsRepository*/ IUnitOfWork unitOfWork)
         {
-            this.itemsRepository = itemsRepository;
+            this.unitOfWork = unitOfWork;
+            //this.itemsRepository = itemsRepository;
         }
 
         [HttpGet("Items")]
-        public async Task<ActionResult<IEnumerable<ItemsDTO>>> GetItems()
+        public async Task<ActionResult<IEnumerable<ItemsDTO>>> GetItems( int page_size=5 , int page_index =1)
         {
-            var items = await itemsRepository.GetItemsAsync();
+            var items = await unitOfWork.ItemsRepository.GetItemsAsync(page_index , page_size);
             if(items == null)
             {
                 return NotFound("items not exists");
